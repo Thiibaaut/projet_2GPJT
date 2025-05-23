@@ -1,0 +1,9 @@
+body {
+    background-color: white;
+}
+
+#nav {
+    display: block;
+    max-width: 15%;
+    max-height: 15%;
+}

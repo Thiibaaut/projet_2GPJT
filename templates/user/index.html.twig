@@ -1,0 +1,19 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello UserController!{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <a class="btn btn-danger" href="{{ path('app_logout') }}">Se déconnecter</a>
+        <img style="max-width: 10%;" src="{{ vich_uploader_asset(user, 'imageFile') }}">
+        <p> Nom utilisateur : {{ user.nom }}<br>
+        Bio : {{ user.bio }}</p>
+
+        {# {% if user.profil_verif %}
+            <p>Le profil est vérifié</p>
+        {% else %}
+            <p>Le profil n'est pas vérifié</p>
+        {% endif %} #}
+        <a class="btn btn-primary mt-4 mb-4" href="{{ path('app_user_edit', {'id': user.id}) }}}">Modifier</a>
+    </div>
+{% endblock %}
