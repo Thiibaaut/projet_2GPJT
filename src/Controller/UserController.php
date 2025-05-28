@@ -34,10 +34,6 @@ final class UserController extends AbstractController
         $user_connected = $this->getUser();
         $post = $postRepository->mesPosts($user_created_id);
 
-        if ($id == "5") {
-            $this->redirectToRoute('app_user');
-        }
-
         return $this->render('user/profil.html.twig', [
             'user'=> $profil,
             'post'=> $post,

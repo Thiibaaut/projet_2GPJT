@@ -34,7 +34,6 @@
                                     J'aime
                                 </a>
                             </div>
-
                                 <h4>Commentaire(s)</h4>
                                 {% for comment in post.comment %}
                                 <div class="card mb-3" style="width: 32.5rem;">
@@ -59,6 +58,7 @@
                                 <button type="submit" class="btn btn-success">Ajouter</button>
                                 {{ form_end(form) }}
                             </div>
+                        <a class="btn btn-secondary" href="{{ path('app_post_show', {id: post.id}) }}">Afficher le post</a>
                     </div>
             </div>
         {% else %}

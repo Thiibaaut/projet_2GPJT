@@ -8,9 +8,9 @@
         <h3 class="h3 mb-4 font-weight-normal">Pour accèder à l'application, veuillez-vous inscrire ci-dessous</h3>
         <div class="form_inscription">
             <form>
-            {{ form_errors(registrationForm) }}
+                {{ form_errors(registrationForm) }}
 
-        {{ form_start(registrationForm) }}
+                {{ form_start(registrationForm) }}
             {{ form_row(registrationForm.email, {'attr': {'class': 'form-control'}}) }}
             {{ form_row(registrationForm.plainPassword, {'attr': {'class': 'form-control'},
                 label: 'Mot de passe'
@@ -21,11 +21,10 @@
             {{ form_row(registrationForm.agreeTerms, {
                 label: "Vous acceptez les conditions d'utilisations"
             }) }}
-
-            <button type="submit" class="button mt-4">S'inscrire</button>
-        {{ form_end(registrationForm) }}
+                <button class="btn btn-success mb-5">{{ button_label|default('Crée') }}</button>
+            {{ form_end(registrationForm) }}
             </form>
         </div>
     </div>
-    <a class="navigation" href="{{ path('app_login') }}">Se connecter</a>
+    <a class="navigation" href="{{ path('app_login') }}">Connexion</a>
 {% endblock %}

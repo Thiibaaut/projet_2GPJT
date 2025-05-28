@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Comment;
 use App\Entity\Post;
+use App\Entity\Produit;
 use App\Form\CommentFormType;
 use App\Form\PostFormType;
 use App\Repository\PostRepository;
@@ -47,6 +48,18 @@ final class PostController extends AbstractController
             'form' => $form->createView()
         ]);
     }
+
+    #[Route('/feed/show/{id}', name: 'app_post_show', methods: ['GET'])]
+    public function show(Post $post): Response
+    {
+        $user_created_id = $this->security->getUser()->getId();
+
+        return $this->render('post/show.html.twig', [
+            'post' => $post,
+            'usercreatedid' => $user_created_id
+        ]);
+    }
+
 
     #[Route('/feed/newPost', name: 'app_post_new', methods: ['GET', 'POST'])]
     public function new(\Symfony\Component\HttpFoundation\Request $request, EntityManagerInterface $entityManager): Response
