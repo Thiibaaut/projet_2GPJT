@@ -17,7 +17,7 @@ class Comment {
     #[ORM\Column(type: Types::TEXT)]
     private ?string $Contenu = null;
 
-    #[ORM\Column(type: Types::DATE_MUTABLE, nullable: true)]
+    #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
     private ?\DateTimeInterface $creation = null;
 
     #[ORM\ManyToOne(cascade: ['persist'])]

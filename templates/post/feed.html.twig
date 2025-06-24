@@ -12,9 +12,18 @@
                     <div class="card" style="width: 40rem;">
                         <div class="card-body">
                             <a style="text-decoration: none"  href="{{ path('user_profil', {id: post.usercreated.id}) }}">
+                                {% if post.usercreated.imageFile %}
+                                    <img src="{{ asset('images/user/' ~ post.usercreated.imageFile) }}" id="pp_post" alt="Image de l'utilisateur">
+                                {% else %}
+                                    <p>pas d'image de profi:</p>
+                                {% endif %}
                                 <h4 class="card-title">{{ post.usercreated.nom }}</h4>
                             </a>
-                            <h5 class="card-title">{{ post.titre }}</h5>
+
+                            <a style="text-decoration: none"  href="{{ path('app_post_show', {id: post.id}) }}">
+                                <h5 class="card-title">{{ post.titre }}</h5>
+                            </a>
+
                         {% if post.media != NULL %}
                             <img src="{{ post.media }}" class="card-img-top" alt="...">
                         {% endif %}
@@ -38,6 +47,11 @@
                                 {% for comment in post.comment %}
                                 <div class="card mb-3" style="width: 32.5rem;">
                                     <div class="card-body">
+                                            {% if post.usercreated.imageFile %}
+                                                <img src="{{ asset('images/user/' ~ post.usercreated.imageFile) }}" id="pp_post" alt="Image de l'utilisateur">
+                                            {% else %}
+                                                <p>pas d'image de profil</p>
+                                            {% endif %}
                                             <h5 class="card-title">Utilisateur : {{ comment.usercreated.nom }}</h5>
                                             <p class="card-text">Commentaire : {{ comment.Contenu }}</p>
                                             <p class="card-text"><small class="text-muted">{{ comment.Creation|date('d-m-Y H:i:s', "Europe/Paris") }}</small></p>
@@ -53,10 +67,7 @@
                                 {% else %}
                                     <p>Aucun commentaire</p>
                                 {% endfor %}
-
-                                {{ form_start(form) }}
-                                <button type="submit" class="btn btn-success">Ajouter</button>
-                                {{ form_end(form) }}
+                            <a class="btn btn-info" href="{{ path('app_post_show', {id: post.id}) }}">Ajouter un commentaire</a>
                             </div>
                         <a class="btn btn-secondary" href="{{ path('app_post_show', {id: post.id}) }}">Afficher le post</a>
                     </div>

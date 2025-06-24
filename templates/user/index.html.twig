@@ -4,16 +4,21 @@
 
 {% block body %}
     <div class="container">
+        {% if user.imageFile %}
+            <img src="{{ asset('images/user/' ~ user.imageFile) }}" id="pp_profil" alt="Image de l'utilisateur">
+        {% else %}
+            <p>pas d'image de profi:</p>
+        {% endif %}
         <a class="btn btn-danger" href="{{ path('app_logout') }}">Se déconnecter</a>
-        <img style="max-width: 10%;" src="{{ vich_uploader_asset(user, 'imageFile') }}">
+
         <p> Nom utilisateur : {{ user.nom }}<br>
         Bio : {{ user.bio }}</p>
-
-        {# {% if user.profil_verif %}
-            <p>Le profil est vérifié</p>
+        {% if user.profilPublic %}
+            <p>Visibilité du profil : public</p>
         {% else %}
-            <p>Le profil n'est pas vérifié</p>
-        {% endif %} #}
-        <a class="btn btn-primary mt-4 mb-4" href="{{ path('app_user_edit', {'id': user.id}) }}}">Modifier</a>
+            <p>Visibilité du profil : privé</p>
+        {% endif %}
+
+        <a class="btn btn-primary mt-4 mb-4" href="{{ path('app_user_edit') }}">Modifier</a>
     </div>
 {% endblock %}

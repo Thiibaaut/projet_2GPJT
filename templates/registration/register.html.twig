@@ -7,7 +7,6 @@
         <h1>Inscrivez-vous</h1>
         <h3 class="h3 mb-4 font-weight-normal">Pour accèder à l'application, veuillez-vous inscrire ci-dessous</h3>
         <div class="form_inscription">
-            <form>
                 {{ form_errors(registrationForm) }}
 
                 {{ form_start(registrationForm) }}
@@ -23,7 +22,6 @@
             }) }}
                 <button class="btn btn-success mb-5">{{ button_label|default('Crée') }}</button>
             {{ form_end(registrationForm) }}
-            </form>
         </div>
     </div>
     <a class="navigation" href="{{ path('app_login') }}">Connexion</a>

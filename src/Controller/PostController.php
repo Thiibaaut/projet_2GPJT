@@ -49,14 +49,29 @@ final class PostController extends AbstractController
         ]);
     }
 
-    #[Route('/feed/show/{id}', name: 'app_post_show', methods: ['GET'])]
-    public function show(Post $post): Response
+    #[Route('/feed/show/{id}', name: 'app_post_show', methods: ['GET', 'POST'])]
+    public function show(Request $request, int $id, EntityManagerInterface $entityManager, Post $post, int $user_created = null): Response
     {
         $user_created_id = $this->security->getUser()->getId();
 
+        $comment = new Comment();
+        $form = $this->createForm(CommentFormType::class, $comment);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $comment->setUserCreated($this->security->getUser());
+            $comment->setCreation(new \DateTime('now'));
+            $comment->setPost($post);
+            $entityManager->persist($comment);
+            $entityManager->flush();
+
+            return $this->redirectToRoute('app_post_show', ['id' => $post->getId()]);
+        }
+
         return $this->render('post/show.html.twig', [
             'post' => $post,
-            'usercreatedid' => $user_created_id
+            'usercreatedid' => $user_created_id,
+            'form' => $form->createView()
         ]);
     }
 

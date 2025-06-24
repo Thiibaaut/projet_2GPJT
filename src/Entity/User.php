@@ -43,20 +43,20 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(length: 200)]
     private ?string $nom = null;
 
-    #[Vich\UploadableField(mapping: 'product_user', fileNameProperty: 'imageName')]
-    private ?File $imageFile = null;
+    #[ORM\Column(length: 200)]
+    private ?string $imageFile = null;
 
-    #[ORM\Column(type:'string', nullable: true)]
+    #[ORM\Column(type: 'string', nullable:true)]
     private ?string $imageName = null;
 
-    #[ORM\Column(nullable: true)]
+    #[ORM\Column(nullable:true)]
     private ?\DateTimeImmutable $updatedAt = null;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $bio = null;
 
     #[ORM\Column(type: Types::BOOLEAN, nullable: true)]
-    private ?bool $profil_verif = null;
+    private ?bool $profil_public = null;
 
     /**
      * @var Collection<int, Post>
@@ -179,14 +179,14 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function isProfilVerif(): ?bool
+    public function isProfilPublic(): ?bool
     {
-        return $this->profil_verif;
+        return $this->profil_public;
     }
 
-    public function setProfilVerif(bool $profil_verif): self
+    public function setProfilPublic(bool $profil_public): self
     {
-        $this->profil_verif = $profil_verif;
+        $this->profil_public = $profil_public;
 
         return $this;
     }
@@ -257,21 +257,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      *
      * @param File|\Symfony\Component\HttpFoundation\File\UploadedFile|null $imageFile
      */
-    public function setImageFile(?File $imageFile = null): void
-    {
-        $this->imageFile = $imageFile;
-
-        if (null !== $imageFile) {
-            // It is required that at least one field changes if you are using doctrine
-            // otherwise the event listeners won't be called and the file is lost
-            $this->updatedAt = new \DateTimeImmutable();
-        }
-    }
-
-    public function getImageFile(): ?File
-    {
-        return $this->imageFile;
-    }
 
     public function setImageName(?string $imageName): void
     {
@@ -282,4 +267,41 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         return $this->imageName;
     }
+
+    /**
+     * Get the value of updatedAt
+     */
+    public function getUpdatedAt(): ?\DateTimeImmutable
+    {
+        return $this->updatedAt;
+    }
+
+    /**
+     * Set the value of updatedAt
+     */
+    public function setUpdatedAt(?\DateTimeImmutable $updatedAt): self
+    {
+        $this->updatedAt = $updatedAt;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of imageFile
+     */
+    public function getImageFile(): ?string
+    {
+        return $this->imageFile;
+    }
+
+    /**
+     * Set the value of imageFile
+     */
+    public function setImageFile(?string $imageFile): self
+    {
+        $this->imageFile = $imageFile;
+
+        return $this;
+    }
+
 }

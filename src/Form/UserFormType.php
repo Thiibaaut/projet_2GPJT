@@ -3,13 +3,11 @@
 namespace App\Form;
 
 use App\Entity\User;
-use Doctrine\DBAL\Types\TextType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Vich\UploaderBundle\Entity\File;
-use Vich\UploaderBundle\Form\Type\VichFileType;
-use Vich\UploaderBundle\Form\Type\VichImageType;
+use Symfony\Component\Validator\Constraints\File;
 
 class UserFormType extends AbstractType
 {
@@ -18,10 +16,12 @@ class UserFormType extends AbstractType
         $builder
             ->add('nom')
             ->add('bio')
-            ->add('imageFile', VichImageType::class, [
+            ->add('imageFile', FileType::class, [
+                'label' => 'brochure (PDF file)',
+                'mapped' => false,
                 'required' => false,
-                'mapped' => false
             ])
+            ->add('profil_verif')
         ;
     }
 

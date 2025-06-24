@@ -9,10 +9,12 @@ use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Bundle\SecurityBundle\Security;
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
+use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
-use Vich\UploaderBundle\Entity\File;
+use Symfony\Component\String\Slugger\SluggerInterface;
 
 final class UserController extends AbstractController
 {
@@ -40,8 +42,8 @@ final class UserController extends AbstractController
         ]);
     }
 
-    #[Route('/profil/my/edit/{id}', name: 'app_user_edit', methods: ['GET', 'POST'])]
-    public function edit(\Symfony\Component\HttpFoundation\Request $request, User $user, EntityManagerInterface $entityManager, Security $security): Response
+    #[Route('/profil/my/edit', name: 'app_user_edit', methods: ['GET', 'POST'])]
+    public function edit(\Symfony\Component\HttpFoundation\Request $request, EntityManagerInterface $entityManager, Security $security, SluggerInterface $slugger, #[Autowire('images/user')] string $imagesDirectory): Response
     {
         $user = $security->getUser();
 
@@ -50,10 +52,22 @@ final class UserController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $imageFile = $form->get('imageFile')->getData();
-
             if ($imageFile) {
-                // L'appel à setImageFile gère l'upload et la mise à jour de la date
-                $user->setImageFile($imageFile);
+                $originalFilename = pathinfo($imageFile->getClientOriginalName(), PATHINFO_FILENAME);
+                // this is needed to safely include the file name as part of the URL
+                $safeFilename = $slugger->slug($originalFilename);
+                $newFilename = $safeFilename.'-'.uniqid().'.'.$imageFile->guessExtension();
+
+                // Move the file to the directory where brochures are stored
+                try {
+                    $imageFile->move($imagesDirectory, $newFilename);
+                } catch (FileException $e) {
+                    // ... handle exception if something happens during file upload
+                }
+
+                // updates the 'brochureFilename' property to store the PDF file name
+                // instead of its contents
+                $user->setImageFile($newFilename);
             }
 
             $entityManager->persist($user);
@@ -63,7 +77,6 @@ final class UserController extends AbstractController
         }
 
         return $this->render('user/edit.html.twig', [
-            'controller_name' => 'UserController',
             'user' => $user,
             'form' => $form->createView(),
         ]);

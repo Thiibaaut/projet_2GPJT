@@ -23,7 +23,7 @@ a {
     color: black;
 }
 
-form {
+#form {
     display: block;
     margin: 0 auto;
     max-width: 50%;
